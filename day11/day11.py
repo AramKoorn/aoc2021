@@ -8,6 +8,7 @@ m = len(grid[0])
 
 offset = ((0, 1), (1, 0), (0, -1), (-1, 0), (-1, 1), (-1, -1), (1, 1), (1, -1))
 
+
 def check(i, j):
     if i >= 0 and j >= 0 and i < n  and j < m:
         return True
@@ -17,8 +18,11 @@ def check(i, j):
 def part1(steps=100):
 
     res = 0
+    part2 = True
 
     for step in range(steps):
+
+        sm = 0
 
         flashes = set()
 
@@ -54,14 +58,23 @@ def part1(steps=100):
                         if grid[x][y] != 0:
                             grid[x][y] += 1
 
-        print(step)
         if step == 99:
-            2
-    print(res)
+            print(f'Answer part1: {res}')
+
+        # Calculate sum
+        if part2:
+            for i in range(n):
+                for j in range(m):
+                    sm += grid[i][j]
+
+            if sm == 0:
+                print(f"Answer part 2: {step + 1}")
+                part2 = False
 
 
 
-part1(100)
+
+part1(1000)
 
 
 
