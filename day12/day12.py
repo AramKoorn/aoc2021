@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import Counter
 
 f = open('input.txt', 'r')
 lines = f.readlines()
@@ -19,22 +19,35 @@ def get_all_possibilities(value):
     return poss
 
 
-def rec(current, potential):
+def rec(current, potential, twice=True):
     # Brute force all possible paths if we reach end we created a succesfull path
-    print(potential)
     poss = get_all_possibilities(current)
     if current == 'end':
         PATHS.append(potential)
         return
     for x in poss:
-        print(poss)
-        if x.islower() and x not in potential:
-            VISITED.append(potential + [x])
-            rec(x, potential + [x])
-        elif x.isupper() and potential + [x] not in VISITED:
-            VISITED.append(potential + [x])
-            rec(x, potential + [x])
+        if not twice:
+            if x.islower() and x not in potential:
+                VISITED.append(potential + [x])
+                rec(x, potential + [x])
+            elif x.isupper() and potential + [x] not in VISITED:
+                VISITED.append(potential + [x])
+                rec(x, potential + [x])
+        else:
+            c = Counter(potential + [x])
+            n_twos = 0
+            if len(c) > 0:
+                for k, v in c.items():
+                    if k.islower():
+                        if v > 1:
+                            n_twos += 1
 
+            if x.islower() and c[x] < 3 and n_twos < 2:
+                VISITED.append(potential + [x])
+                rec(x, potential + [x])
+            elif x.isupper() and potential + [x] not in VISITED:
+                VISITED.append(potential + [x])
+                rec(x, potential + [x])
 
 
 
